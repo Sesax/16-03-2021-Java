@@ -2,6 +2,7 @@ package fr.pgah.libgdx;
 
 import java.util.Random;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -111,5 +112,18 @@ public class Sprite {
         1, 1, rotation,
         0, 0, img.getWidth(), img.getHeight(),
         false, false);
+  }
+
+  public boolean isClicked(){
+
+    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+      if (this.coordX < Gdx.input.getX() && (this.coordX + this.longueurEffective) > Gdx.input.getX()){
+        if (this.coordY < (hauteurFenetre-Gdx.input.getY()) && (this.coordY + this.hauteurEffective) > (hauteurFenetre-Gdx.input.getY())){
+          System.out.println("True");
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
