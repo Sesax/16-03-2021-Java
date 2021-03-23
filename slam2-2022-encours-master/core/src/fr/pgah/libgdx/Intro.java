@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Intro extends ApplicationAdapter {
 
   final int NB_SPRITES = 5;
+  int nb_vie;
   SpriteBatch batch;
   int longueurFenetre;
   int hauteurFenetre;
   ArrayList<Sprite> sprites;
-  Joueur joueur;
   boolean gameOver;
   Texture gameOverTexture;
 
@@ -24,11 +24,11 @@ public class Intro extends ApplicationAdapter {
     longueurFenetre = Gdx.graphics.getWidth();
     hauteurFenetre = Gdx.graphics.getHeight();
 
+    nb_vie = NB_SPRITES;
     gameOver = false;
     gameOverTexture = new Texture("game_over.png");
 
     initialisationSprites();
-    initialiserJoueur();
   }
 
   private void initialisationSprites() {
@@ -38,15 +38,12 @@ public class Intro extends ApplicationAdapter {
     }
   }
 
-  private void initialiserJoueur() {
-    joueur = new Joueur();
-  }
-
   @Override
   public void render() {
     // gameOver est mis à TRUE dès qu'un "hit" est repéré
     if (!gameOver) {
       reinitialiserArrierePlan();
+      checkCollide();
       majEtatProtagonistes();
       majEtatJeu();
       dessiner();
@@ -58,19 +55,24 @@ public class Intro extends ApplicationAdapter {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
   }
 
+  private void checkCollide(){
+    for (int i = 0; i < sprites.size(); i++) {
+      if (sprites.get(i).isClicked()){
+        nb_vie -= 1;
+      }
+    }
+  }
+
   private void majEtatProtagonistes() {
     // Sprites
-    for (int i = 0; i < NB_SPRITES; i++) {
+    for (int i = 0; i < sprites.size(); i++) {
       sprites.get(i).majEtat();
     }
-
-    // Joueur
-    joueur.majEtat();
   }
 
   private void majEtatJeu() {
     // On vérifie si le jeu continue ou pas
-    if (joueur.estEnCollisionAvec(sprites)) {
+    if (nb_vie <= 0){
       gameOver = true;
     }
   }
@@ -87,7 +89,6 @@ public class Intro extends ApplicationAdapter {
       for (int i = 0; i < NB_SPRITES; i++) {
         sprites.get(i).dessiner(batch);
       }
-      joueur.dessiner(batch);
     }
     batch.end();
   }
