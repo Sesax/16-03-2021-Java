@@ -58,6 +58,10 @@ public class Intro extends ApplicationAdapter {
   private void checkCollide(){
     for (int i = 0; i < sprites.size(); i++) {
       if (sprites.get(i).isClicked()){
+        sprites.get(i).coordX = -100;
+        sprites.get(i).coordY = -100;
+        sprites.get(i).zoneDeHit.setPosition(sprites.get(i).coordX, sprites.get(i).coordY);
+        sprites.get(i).vie = false;
         nb_vie -= 1;
       }
     }
