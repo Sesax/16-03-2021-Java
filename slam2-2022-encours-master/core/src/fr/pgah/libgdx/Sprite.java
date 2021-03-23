@@ -24,6 +24,7 @@ public class Sprite {
   int hauteurEffective;
   Random generateurAleatoire;
   Rectangle zoneDeHit;
+  boolean vie;
 
   public Sprite(String img) {
     // On pourrait aussi copier tout le contenu de la méthode ici
@@ -47,12 +48,15 @@ public class Sprite {
     coordX = generateurAleatoire.nextInt(longueurFenetre - longueurEffective);
     coordY = generateurAleatoire.nextInt(hauteurFenetre - hauteurEffective);
     zoneDeHit = new Rectangle(coordX, coordY, longueurEffective, hauteurEffective);
+    vie = true;
   }
 
   public void majEtat() {
-    deplacer();
-    pivoter();
-    forcerAResterDansLeCadre();
+    if (vie){
+      deplacer();
+      pivoter();
+      forcerAResterDansLeCadre();
+    }
   }
 
   public void pivoter() {
