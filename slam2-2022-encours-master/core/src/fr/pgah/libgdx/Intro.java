@@ -56,21 +56,23 @@ public class Intro extends ApplicationAdapter {
   }
 
   private void checkCollide(){
-    for (int i = 0; i < sprites.size(); i++) {
-      if (sprites.get(i).isClicked()){
-        sprites.get(i).coordX = -100;
-        sprites.get(i).coordY = -100;
-        sprites.get(i).zoneDeHit.setPosition(sprites.get(i).coordX, sprites.get(i).coordY);
-        sprites.get(i).vie = false;
+    Sprite spriteTouch = null;
+    for (Sprite sprite : sprites) {
+      if (sprite.isClicked()){
+        spriteTouch = sprite;
         nb_vie -= 1;
+        break;
       }
+    }
+    if (spriteTouch != null){
+      sprites.remove(spriteTouch);
     }
   }
 
   private void majEtatProtagonistes() {
     // Sprites
-    for (int i = 0; i < sprites.size(); i++) {
-      sprites.get(i).majEtat();
+    for (Sprite sprite : sprites) {
+      sprite.majEtat();
     }
   }
 
@@ -90,8 +92,8 @@ public class Intro extends ApplicationAdapter {
       batch.draw(gameOverTexture, 100, 100);
     } else {
       // Affichage "normal", jeu en cours
-      for (int i = 0; i < NB_SPRITES; i++) {
-        sprites.get(i).dessiner(batch);
+      for (Sprite sprite : sprites) {
+        sprite.dessiner(batch);
       }
     }
     batch.end();
