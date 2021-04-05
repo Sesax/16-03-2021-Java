@@ -24,11 +24,15 @@ public class Sprite {
   int hauteurEffective;
   Random generateurAleatoire;
   Rectangle zoneDeHit;
-  boolean vie;
 
   public Sprite(String img) {
     // On pourrait aussi copier tout le contenu de la méthode ici
-    initialiser(img);
+    this.initialiser(img);
+  }
+
+  public Sprite(String img, int coordX, int coordY) {
+
+    this.initialiserMenu(img, coordX, coordY);
   }
 
   private void initialiser(String img) {
@@ -48,15 +52,31 @@ public class Sprite {
     coordX = generateurAleatoire.nextInt(longueurFenetre - longueurEffective);
     coordY = generateurAleatoire.nextInt(hauteurFenetre - hauteurEffective);
     zoneDeHit = new Rectangle(coordX, coordY, longueurEffective, hauteurEffective);
-    vie = true;
+  }
+
+  private void initialiserMenu(String img, int coordX, int coordY) {
+    longueurFenetre = Gdx.graphics.getWidth();
+    hauteurFenetre = Gdx.graphics.getHeight();
+
+    generateurAleatoire = new Random();
+    this.img = new Texture(img);
+    facteurTaille = 1;
+    vitesse = 1 + generateurAleatoire.nextInt(10);
+    rotation = 0;
+    vitesseRotation = 5 + generateurAleatoire.nextInt(21);
+    versLaDroite = generateurAleatoire.nextBoolean();
+    versLeHaut = generateurAleatoire.nextBoolean();
+    longueurEffective = (int) (this.img.getWidth() * facteurTaille);
+    hauteurEffective = (int) (this.img.getHeight() * facteurTaille);
+    this.coordX = coordX;
+    this.coordY = coordY;
+    zoneDeHit = new Rectangle(coordX, coordY, longueurEffective, hauteurEffective);
   }
 
   public void majEtat() {
-    if (vie){
-      deplacer();
-      pivoter();
-      forcerAResterDansLeCadre();
-    }
+    deplacer();
+    pivoter();
+    forcerAResterDansLeCadre();
   }
 
   public void pivoter() {
@@ -118,7 +138,7 @@ public class Sprite {
         false, false);
   }
 
-  public boolean isClicked(){
+  public boolean isClicked() {
 
     if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
       if (this.coordX < Gdx.input.getX() && (this.coordX + this.longueurEffective) > Gdx.input.getX()){
